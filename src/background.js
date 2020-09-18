@@ -19,8 +19,10 @@
     const handleMessage = (request, sender, sendResponse) => {
         switch (request.action) {
             case 'CONTENT_ACTION_SELECT_ELEMENT':
-                ext.contextMenus.update(copyHtmlMenu, {
-                    enabled: request.data.enabled,
+                [copyHtmlMenu, downloadMenu].forEach(item => {
+                    ext.contextMenus.update(item, {
+                        enabled: request.data.enabled,
+                    });
                 });
                 break;
             default:
