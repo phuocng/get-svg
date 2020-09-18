@@ -14,6 +14,11 @@
         title: 'Download',
         contexts: ['all'],
         enabled: false,
+        onclick: (info, tab) => {
+            ext.tabs.sendMessage(tab.id, {
+                action: 'BACKGROUND_ACTION_DOWNLOAD',
+            });
+        },
     });
 
     const handleMessage = (request, sender, sendResponse) => {
