@@ -28,6 +28,19 @@
         }
     };
 
+    const download = (text, fileName) => {
+        const link = document.createElement('a');
+        link.setAttribute('href', `data:text/plain;charset=utf-8,${encodeURIComponent(text)}`);
+        link.setAttribute('download', fileName);
+    
+        link.style.display = 'none';
+        document.body.appendChild(link);
+    
+        link.click();
+    
+        document.body.removeChild(link);
+    };
+
     const handleMouseDown = (e) => {
         // Only handle the right-click event
         if (e.button !== 2) {
@@ -164,6 +177,13 @@
             case 'BACKGROUND_ACTION_COPY':
                 if (currentSvgEle) {
                     copyToClipboard(currentSvgEle.outerHTML);
+                }
+                break;
+
+            case 'BACKGROUND_ACTION_DOWNLOAD':
+                if (currentSvgEle) {
+                    // TODO: Generate the file name from `title` element if there is any
+                    download(currentSvgEle.outerHTML, 'file.svg');
                 }
                 break;
 
