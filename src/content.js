@@ -118,16 +118,16 @@
             case 'textPath':
             case 'tspan':
             case 'view':
-                currentSvgEle = null;
+                currentSvgEle = e.target.closest('svg');
                 break;
             
-            // TODO: Some common tags that can be used within a SVG
+            // Some common tags that can be used within a SVG
             // See https://developer.mozilla.org/en-US/docs/Web/SVG/Element/a
             case 'a':
             case 'script':
             case 'style':
             case 'title':
-                currentSvgEle = null;
+                currentSvgEle = e.target.closest('svg');
                 break;
 
             case 'use':
@@ -149,12 +149,19 @@
                 currentSvgEle = null;
                 break;
         }
+
+        ext.runtime.sendMessage({
+            action: 'CONTENT_ACTION_SELECT_ELEMENT',
+            data: {
+                enabled: currentSvgEle !== null,
+            },
+        });
     };
 
     // Get the message from `background.js`
     const handleMessage = (request, sender, sendResponse) => {
         switch (request.action) {
-            case 'ACTION_COPY':
+            case 'BACKGROUND_ACTION_COPY':
                 if (currentSvgEle) {
                     copyToClipboard(currentSvgEle.outerHTML);
                 }
